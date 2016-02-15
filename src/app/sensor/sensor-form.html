@@ -1,0 +1,30 @@
+<div class="row">
+ <div class="col-md-9">
+   <form (submit)="onSubmit()" #sensorForm="ngForm" >
+    <fieldset class="form-group"[ngClass]="{'has-success': name.valid ,'has-danger': !name.valid}" >
+      <label for="name">Name</label>
+      <input type="text" id="name" class="form-control"   ngControl="name" #name="ngForm" required  >
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label for="sens_id">Sensor ID</label>
+      <input type="text" id="sens_id" class="form-control"   ngControl="sens_id" >
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label for="description">Description</label>
+      <input type="text" id="description" class="form-control"   ngControl="description" >
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label for="type">Type</label>
+      <input type="text" id="type" class="form-control"   ngControl="type" >
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!sensorForm.form.valid" >Submit</button>
+
+  </form>
+ </div>
+</div>
+{{name.className}}
+
