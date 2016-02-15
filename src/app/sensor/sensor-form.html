@@ -3,22 +3,22 @@
    <form (submit)="onSubmit()" #sensorForm="ngForm" >
     <fieldset class="form-group"[ngClass]="{'has-success': name.valid ,'has-danger': !name.valid}" >
       <label for="name">Name</label>
-      <input type="text" id="name" class="form-control"   ngControl="name" #name="ngForm" required  >
+      <input type="text" id="name" [(ngModel)]="sensor.name" class="form-control"   ngControl="name" #name="ngForm" required  >
     </fieldset>
 
     <fieldset class="form-group">
       <label for="sens_id">Sensor ID</label>
-      <input type="text" id="sens_id" class="form-control"   ngControl="sens_id" >
+      <input type="text" id="sens_id" [(ngModel)]="sensor.sens_id" class="form-control"   ngControl="sens_id" >
     </fieldset>
 
     <fieldset class="form-group">
       <label for="description">Description</label>
-      <input type="text" id="description" class="form-control"   ngControl="description" >
+      <input type="text" id="description" [(ngModel)]="sensor.description" class="form-control"   ngControl="description" >
     </fieldset>
 
     <fieldset class="form-group">
       <label for="type">Type</label>
-      <input type="text" id="type" class="form-control"   ngControl="type" >
+      <input type="text" id="type" class="form-control"  [(ngModel)]="sensor.type"  ngControl="type" >
     </fieldset>
 
     <button type="submit" class="btn btn-primary" [disabled]="!sensorForm.form.valid" >Submit</button>
@@ -26,5 +26,6 @@
   </form>
  </div>
 </div>
-{{name.className}}
+{{diagnostic}}
 
+<sensor-list></sensor-list>
