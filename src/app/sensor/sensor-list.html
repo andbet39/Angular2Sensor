@@ -1,5 +1,5 @@
 <h2>Sensor List</h2>
 
 <ul>
-  <li *ngFor="#sensor of sensors">{{sensor.name}}</li>
+  <li *ngFor="#sensor of sensors"> <a class="nav-link" [routerLink]=" ['SensorView'] ">{{sensor.name}}</a></li>
 </ul>

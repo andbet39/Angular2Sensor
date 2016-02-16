@@ -53,6 +53,7 @@ export class SensorService {
         .map(res => res.json() )
         .subscribe(
           data=>{
+            this._dataStore.sensors=[];
             data.forEach(sens =>{
               this._dataStore.sensors.push(new Sensor(sens.sens_id,sens.name,sens.description));
             });

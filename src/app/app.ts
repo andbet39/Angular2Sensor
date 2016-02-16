@@ -8,6 +8,7 @@ import {FORM_PROVIDERS} from 'angular2/common';
 import {RouterActive} from './directives/router-active';
 import {Home} from './home/home';
 import {SensorFormComponent} from './sensor/sensor-form';
+import {SensorViewComponent} from './sensordata/sensor-view.component';
 
 /*
  * App Component
@@ -39,7 +40,7 @@ import {SensorFormComponent} from './sensor/sensor-form';
 </nav>
    </header>
 
-    <div  class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-md-9 col-md-push-3">
              <router-outlet></router-outlet>
@@ -61,6 +62,8 @@ import {SensorFormComponent} from './sensor/sensor-form';
   { path: '/', component: Home, name: 'Index' },
   { path: '/home', component: Home, name: 'Home' },
   { path: '/sensor', component: SensorFormComponent, name: 'SensorForm' },
+  { path: '/sensorview', component: SensorViewComponent,name: 'SensorView' },
+
   // Async load a component using Webpack's require with es6-promise-loader
   { path: '/about', loader: () => require('./about/about')('About'), name: 'About' },
   { path: '/**', redirectTo: ['Index'] }

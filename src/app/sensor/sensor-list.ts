@@ -9,6 +9,7 @@ import {RouteConfig, Router, ROUTER_DIRECTIVES} from 'angular2/router';
 import {SensorService} from './sensor.service';
 import {Sensor} from "./sensor";
 import {OnInit} from "../../../node_modules/angular2/ts/src/core/linker/interfaces";
+import {SensorViewComponent} from '../sensordata/sensor-view.component';
 
 @Component({
   selector: 'sensor-list',
