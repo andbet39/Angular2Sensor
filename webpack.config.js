@@ -9,6 +9,8 @@ var CopyWebpackPlugin  = require('copy-webpack-plugin');
 var HtmlWebpackPlugin  = require('html-webpack-plugin');
 var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 var ProvidePlugin = require('webpack/lib/ProvidePlugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 
 var metadata = {
   title: 'Angular2 Webpack Starter by @gdi2990 from @AngularClass',
@@ -42,7 +44,10 @@ module.exports = {
 
   resolve: {
     // ensure loader extensions match
-    extensions: prepend(['.ts','.js','.json','.css','.html'], '.async') // ensure .async.ts etc also works
+    extensions: prepend(['.ts','.js','.json','.css','.html'], '.async'),
+    alias:  {
+        metricsgraphcss: __dirname + "/node_modules/metrics-graphics/dist/metricsgraphics.css"
+    }
   },
 
   module: {
@@ -62,12 +67,14 @@ module.exports = {
       { test: /\.json$/,  loader: 'json-loader' },
 
       // Support for CSS as raw text
-      { test: /\.css$/,   loader: 'raw-loader' },
+     // { test: /\.css$/,   loader: 'raw-loader' },
+
+        { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") },
 
       // support for .html as raw text
       { test: /\.html$/,  loader: 'raw-loader', exclude: [ root('src/index.html') ] },
 
-      { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },
+     { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },
       { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
       // Bootstrap 4
       { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' }
@@ -90,6 +97,9 @@ module.exports = {
         'NODE_ENV': JSON.stringify(metadata.ENV)
       }
     }),
+
+    new ExtractTextPlugin("styles.css"),
+
     // jQuery, Tether
     new ProvidePlugin({
       jQuery: 'jquery',

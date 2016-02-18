@@ -9,7 +9,8 @@ import {RouterActive} from './directives/router-active';
 import {Home} from './home/home';
 import {SensorFormComponent} from './sensor/sensor-form';
 import {SensorViewComponent} from './sensordata/sensor-view.component';
-
+import {LoginFormComponent} from './auth/login.component';
+import {GraphViewComponent } from './sensordata/graph-view.component';
 /*
  * App Component
  * Top Level Component
@@ -24,17 +25,17 @@ import {SensorViewComponent} from './sensordata/sensor-view.component';
     <nav class="navbar navbar-light bg-faded">
       <a class="navbar-brand" href="#">MySensor</a>
       <ul class="nav navbar-nav">
-          <li router-active class="nav-item active">
-            <a class="nav-link" [routerLink]=" ['Index'] ">Index</a>
-          </li>
-           <li router-active class="nav-item active">
-            <a class="nav-link" [routerLink]=" ['Home'] ">Home</a>
-          </li>
             <li router-active class="nav-item active">
             <a class="nav-link" [routerLink]=" ['About'] ">About</a>
           </li>
+          <li router-active class="nav-item active">
+            <a class="nav-link" [routerLink]=" ['Login'] ">Login</a>
+          </li>
             <li router-active class="nav-item active">
             <a class="nav-link" [routerLink]=" ['SensorForm'] ">Sensor</a>
+          </li>
+            <li router-active class="nav-item active">
+            <a class="nav-link" [routerLink]=" ['GraphView'] ">Sensor</a>
           </li>
        </ul>
 </nav>
@@ -59,14 +60,13 @@ import {SensorViewComponent} from './sensordata/sensor-view.component';
   `
 })
 @RouteConfig([
-  { path: '/', component: Home, name: 'Index' },
-  { path: '/home', component: Home, name: 'Home' },
+  { path: '/', component: SensorFormComponent, name: 'SensorForm' },
   { path: '/sensor', component: SensorFormComponent, name: 'SensorForm' },
   { path: '/sensorview', component: SensorViewComponent,name: 'SensorView' },
-
-  // Async load a component using Webpack's require with es6-promise-loader
+  { path: '/sensorgraph', component: GraphViewComponent,name: 'GraphView' },
+  { path: '/login', component: LoginFormComponent,name: 'Login' },
+   // Async load a component using Webpack's require with es6-promise-loader
   { path: '/about', loader: () => require('./about/about')('About'), name: 'About' },
-  { path: '/**', redirectTo: ['Index'] }
 ])
 export class App {
   angularclassLogo = 'assets/img/angularclass-avatar.png';

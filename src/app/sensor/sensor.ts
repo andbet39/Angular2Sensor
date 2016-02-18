@@ -3,9 +3,12 @@
  */
 export class Sensor{
 
-  constructor(public sens_id?:number,
+  constructor(
+              public sens_id?:number,
               public name?:string,
-              public description?:string){
+              public description?:string,
+              public id?:string
+  ){
 
   }
 }
