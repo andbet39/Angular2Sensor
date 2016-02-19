@@ -42,10 +42,11 @@ export class SensorService {
     var headers = new Headers();
     headers.append('Content-Type', 'application/json ; charset=utf-8');
 
+    /*
     if(this._authService.loggedUser.accessToken){
       headers.append('Authorization',this._authService.loggedUser.accessToken );
     }
-
+*/
 
     this.http.post('http://127.0.0.1:3001/api/sensors',JSON.stringify(sensor),{headers:headers})
       .map(res => res.json() )
