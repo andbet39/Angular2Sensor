@@ -95,6 +95,8 @@ export class SensorService {
       )
   }
 
+
+
   /*getSensorP(id:string){
     return this.http.get('http://127.0.0.1:3001/api/sensors/'+id)
       .map(res => res.json()).toPromise();

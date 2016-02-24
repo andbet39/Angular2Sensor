@@ -3,9 +3,9 @@
  */
 export class SensorData{
 
-  constructor(public sens_id:string,
-              public created:Date,
-              public val:string){
+  constructor(public sens_id?:string,
+              public created?:Date,
+              public val?:string){
 
   }
 }

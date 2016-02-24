@@ -5,103 +5,124 @@ import {SensorService} from '../sensor/sensor.service';
 import {Sensor} from "../sensor/sensor";
 import {SensorData} from "./sensordata";
 import {SensDataComponent} from "./sensdata.component";
-
-let d3 = require('d3');
-let MG = require('metrics-graphics');
-
-require('metrics-graphics/dist/metricsgraphics.css');
-
+import {MetricsGraph} from "../metricsgraph/metricsgraph";
+import {LatestData} from "./latestData.component";
 
 @Component({
-  selector: 'sensor-graph',
-  directives: [ ...ROUTER_DIRECTIVES,SensDataComponent],
-  styles:[],
-  template:` <h2>{{sensor.name}}</h2>
-              <div id="graph"></div>
-              <button (click)="loadData()">Load Data</button>
+    selector: 'sensor-graph',
+    directives: [...ROUTER_DIRECTIVES, SensDataComponent, MetricsGraph,LatestData],
+    styles: [],
+    template: `
+              <h2>{{sensor.name}}</h2>
+              <form>
+                <input type="date" [(ngModel)]="start_dt"><input type="date" [(ngModel)]="end_dt">
+                <button class="btn btn-success" (click)="loadAggregate()">Load Data</button>
+              </form>
+              <latest-data [data]="latestData"></latest-data>
+              <metricg [data]="graphdata" [title]="Latest" [description]="sensor.description"></metricg>
 
-               <ul>
-               <li *ngFor="#data of sensorData">
-                 <sensor-data [sensordata]="data"></sensor-data>
-               </li>
-               </ul>
-
-
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Hour</th>
+                   <th>Avg</th>
+                   <th>Max</th>
+                   <th>Min</th>
+                   <th>#</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="#agg of aggregated">
+                  <td>{{agg._id.hour}}</td>
+                   <td>{{agg.avg}}</td>
+                   <td>{{agg.max}}</td>
+                   <td>{{agg.min}}</td>
+                   <td>{{agg.count}}</td>
+                </tr>
+                </tbody>
+              </table>
               `
-}
+  }
 )
 
-export class GraphViewComponent implements OnInit{
+export class GraphViewComponent implements OnInit {
 
   public options:any;
-  public sensors:Array<Sensor>=[];
-  public sensorData:Array<SensorData>=[];
+  public sensorData:Array<SensorData> = [];
   public graphdata:any = [];
-  public sin=[];
-  public MG:any;
   public sensor:Sensor = new Sensor();
+  public aggregated:any;
+  public start_dt:Date = new Date();
+  public end_dt:Date = new Date();
+
+  public latestData:SensorData;
 
   ngOnInit() {
     let id = this._routeParams.get('id');
     this.sensorService.getSensor(id);
   }
 
-  ngAfterViewInit(){
-
-  }
-
-  loadData(){
+  loadData() {
     this.sensorDataService.getData(this.sensor.sens_id);
   }
+
+  loadAggregate() {
+    this.sensorDataService.getAggregateByDate(this.sensor.sens_id, this.start_dt, this.end_dt)
+      .subscribe(data=> {
+        this.aggregated = data.stats;
+        console.log(this.aggregated);
+        var gdata = [];
+
+        this.aggregated.forEach(elem=> {
+          let d = {
+            'date': new Date(this.dateFromDayAndTime(elem._id.year, elem._id.dayOfYear, elem._id.hour)),
+            'value': elem.avg
+          };
+          gdata.push(d);
+        });
+
+        this.graphdata = gdata;
+      })
+  }
+
+  dateFromDayAndTime(year, day, hour) {
+    var date = new Date(year, 0);
+    var daydate = new Date(date.setDate(day));// initialize a date in `year-01-01`
+    return daydate.setHours(hour, 0, 0, 0); // add the number of days
+  }
+
 
   constructor(public sensorDataService:SensorDataService,
               public sensorService:SensorService,
               private _router:Router,
               private _routeParams:RouteParams) {
 
-    this.graphdata = require('metrics-graphics/examples/data/fake_users1.json');
-
     this.sensorService.sensor$.subscribe(
-      data=>{ this.sensor  = data;}
+      data=> {
+        this.sensor = data;
+        this.loadData();
+
+        this.sensorDataService.getLatest(this.sensor.sens_id)
+            .subscribe(ldata =>{
+              this.latestData = new SensorData(ldata[0].sens_id,ldata[0].received,ldata[0].val);
+              console.log(this.latestData);
+            });
+       }
     );
 
     this.sensorDataService.sensordatas$.subscribe(
-      data=>{
-
+      data=> {
         this.sensorData = data;
-        this.graphdata =[];
+        this.graphdata = [];
 
-
-        for (var i =0;i<data.length;i++){
-          let dat= data[i];
+        for (var i = 0; i < data.length; i++) {
+          let dat = data[i];
           let e = {
             "date": dat.created,
-            "x":i,// dat.created.getFullYear().toString()+'-'+dat.created.getMonth().toString()+'-'+dat.created.getDay().toString(),
             "value": dat.val
-           };
+          };
           this.graphdata.push(e);
         }
-
-
-        console.log("graphData : ");
-        console.log(this.graphdata);
-
-        let d  = this.graphdata;// MG.convert.date(this.graphdata, 'date');
-
-
-        MG.data_graphic({
-          title: this.sensor.name,
-          description: this.sensor.description,
-          animate_on_load: true,
-          data: d,
-          width: 800,
-          height: 400,
-          target: ('#graph'),
-          x_accessor: 'date',
-          y_accessor: 'value'
-        });
-
-
       }
     )
 

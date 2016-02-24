@@ -1,6 +1,9 @@
 import 'jquery';
+require("font-awesome-webpack");
 import 'bootstrap-loader';
 import 'socket.io-client';
+import 'd3';
+import 'nvd3';
 
 
 import {provide, enableProdMode} from 'angular2/core';
@@ -11,7 +14,11 @@ import {SensorService} from "./app/sensor/sensor.service";
 import {SensorDataService} from  './app/sensordata/sensordata.service';
 import {AuthService} from  './app/services/auth.service';
 
+
 const ENV_PROVIDERS = [];
+require('./assets/css/main.css');
+
+
 
 if ('production' === process.env.ENV) {
   enableProdMode();
@@ -19,16 +26,8 @@ if ('production' === process.env.ENV) {
   ENV_PROVIDERS.push(ELEMENT_PROBE_PROVIDERS);
 }
 
-/*
- * App Component
- * our top level component that holds all of our components
- */
 import {App} from './app/app';
 
-/*
- * Bootstrap our Angular app with a top level component `App` and inject
- * our Services and Providers into Angular's dependency injection
- */
 document.addEventListener('DOMContentLoaded', function main() {
   bootstrap(App, [
     ...ENV_PROVIDERS,

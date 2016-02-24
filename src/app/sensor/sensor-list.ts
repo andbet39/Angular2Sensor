@@ -10,10 +10,11 @@ import {SensorService} from './sensor.service';
 import {Sensor} from "./sensor";
 import {OnInit} from "../../../node_modules/angular2/ts/src/core/linker/interfaces";
 import {SensorViewComponent} from '../sensordata/sensor-view.component';
+import {SensorRowComponent} from './sens-row.component';
 
 @Component({
   selector: 'sensor-list',
-  directives: [ ...ROUTER_DIRECTIVES],
+  directives: [ ...ROUTER_DIRECTIVES,SensorRowComponent],
   pipes: [],
   template: require('./sensor-list.html')
 })
@@ -41,4 +42,6 @@ export class SensorListComponent implements OnInit{
     console.log("Smit");
     this.sensorService.loadSensor();
   }
+
+
 }

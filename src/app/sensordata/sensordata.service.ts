@@ -5,6 +5,8 @@ import {Http,HTTP_PROVIDERS,Headers} from 'angular2/http';
 
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
+import Promise = protractor.promise.Promise;
+import {SafeMethodCall} from "../../../node_modules/angular2/ts/src/core/change_detection/parser/ast";
 
 
 @Injectable()
@@ -33,7 +35,7 @@ export class SensorDataService {
   getData(sens_id:number){
 
     console.log("SensordataService -> loadsensor data")
-    this.http.get('http://127.0.0.1:3001/api/Sensdatas?filter[where][sens_id]='+sens_id+'&filter[limit]=200&filter[order]=received%20DESC')
+    this.http.get('http://127.0.0.1:3001/api/Sensdatas?filter[where][sens_id]='+sens_id+'&filter[limit]=100&filter[order]=received%20DESC')
       .map(res => res.json() )
       .subscribe(
         data=>{
@@ -49,8 +51,17 @@ export class SensorDataService {
       )
   }
 
+  getLatest(sens_id:number){
+    console.log("SensordataService -> loadsensor data");
 
+    return this.http.get('http://127.0.0.1:3001/api/Sensdatas?filter[where][sens_id]='+sens_id+'&filter[limit]=1&filter[order]=received%20DESC')
+          .map(res=>res.json());
+  }
 
+  getAggregateByDate(sens_id:number,start_dt:Date,end_dt:Date){
+    return this.http.get('http://127.0.0.1:3001/api/Sensdatas/gethourstats?sens_id='+sens_id+'&start_dt='+start_dt+'&end_dt='+end_dt)
+        .map(res => res.json());
+  }
 
 
 }

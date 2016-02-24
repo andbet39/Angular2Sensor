@@ -26,7 +26,7 @@ module.exports = {
   // static data for index.html
   metadata: metadata,
   // for faster builds use 'eval'
-  devtool: 'source-map',
+  devtool: 'eval',// 'source-map',
   debug: true,
   // cache: false,
 
@@ -66,16 +66,18 @@ module.exports = {
       // Support for *.json files.
       { test: /\.json$/,  loader: 'json-loader' },
 
-      // Support for CSS as raw text
-     // { test: /\.css$/,   loader: 'raw-loader' },
 
-        { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") },
+      //{ test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") },
+      { test: /\.css$/, loader: "style-loader!css-loader" },
 
       // support for .html as raw text
       { test: /\.html$/,  loader: 'raw-loader', exclude: [ root('src/index.html') ] },
 
      { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] },
-      { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
+
+
       // Bootstrap 4
       { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' }
     ]
@@ -98,7 +100,7 @@ module.exports = {
       }
     }),
 
-    new ExtractTextPlugin("styles.css"),
+   // new ExtractTextPlugin("styles.css"),
 
     // jQuery, Tether
     new ProvidePlugin({

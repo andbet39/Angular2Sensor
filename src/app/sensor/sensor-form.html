@@ -1,31 +1,41 @@
 <div class="row">
- <div class="col-md-9">
-   <form (submit)="onSubmit()" #sensorForm="ngForm" >
-    <fieldset class="form-group"[ngClass]="{'has-success': name.valid ,'has-danger': !name.valid}" >
-      <label for="name">Name</label>
-      <input type="text" id="name" [(ngModel)]="sensor.name" class="form-control"   ngControl="name" #name="ngForm" required  >
-    </fieldset>
+  <div class="col-md-9">
+    <sensor-list></sensor-list>
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">New sensor</h3>
+      </div>
+      <div class="panel-body">
 
-    <fieldset class="form-group">
-      <label for="sens_id">Sensor ID</label>
-      <input type="text" id="sens_id" [(ngModel)]="sensor.sens_id" class="form-control"   ngControl="sens_id" >
-    </fieldset>
+        <form (submit)="onSubmit()" #sensorForm="ngForm">
+          <fieldset class="form-group" [ngClass]="{'has-success': name.valid ,'has-danger': !name.valid}">
+            <label for="name">Name</label>
+            <input type="text" id="name" [(ngModel)]="sensor.name" class="form-control" ngControl="name" #name="ngForm"
+                   required>
+          </fieldset>
 
-    <fieldset class="form-group">
-      <label for="description">Description</label>
-      <input type="text" id="description" [(ngModel)]="sensor.description" class="form-control"   ngControl="description" >
-    </fieldset>
+          <fieldset class="form-group">
+            <label for="sens_id">Sensor ID</label>
+            <input type="text" id="sens_id" [(ngModel)]="sensor.sens_id" class="form-control" ngControl="sens_id">
+          </fieldset>
 
-    <fieldset class="form-group">
-      <label for="type">Type</label>
-      <input type="text" id="type" class="form-control"  [(ngModel)]="sensor.type"  ngControl="type" >
-    </fieldset>
+          <fieldset class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" [(ngModel)]="sensor.description" class="form-control"
+                   ngControl="description">
+          </fieldset>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!sensorForm.form.valid" >Submit</button>
+          <fieldset class="form-group">
+            <label for="type">Type</label>
+            <input type="text" id="type" class="form-control" [(ngModel)]="sensor.type" ngControl="type">
+          </fieldset>
 
-  </form>
- </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!sensorForm.form.valid">Submit</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-{{diagnostic}}
-
-<sensor-list></sensor-list>
